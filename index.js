@@ -1,6 +1,7 @@
 // Include package needed
 const inquirer = require("inquirer");
 const fs = require("fs");
+const generateHTML = require("./generateHTML");
 
 // Require all the classes files
 const Manager = require("./lib/manager");
@@ -8,6 +9,7 @@ const Engineer = require("./lib/engineer");
 const Intern = require("./lib/intern");
 const team = [];
 const managersId = [];
+
 
 // Engineer questions
 const engineerQ = [
@@ -110,6 +112,9 @@ function init() {
         if (userAnswers.role === 'Engineer') {
           inquirer.prompt(engineerQ).then((userAnswers) => {
             const engineer = new Engineer(
+              userAnswers.engineerName,
+              userAnswers.engineerEmail,
+              userAnswers.engineerId,
               userAnswers.githubUsername
             );
             team.push(engineer);
@@ -118,6 +123,9 @@ function init() {
         } else if (userAnswers.role === 'Intern') {
           inquirer.prompt(internQ).then((userAnswers) => {
             const intern = new Intern(
+              userAnswers.internName,
+              userAnswers.internEmail,
+              userAnswers.internId,
               userAnswers.internSchool
             );
             team.push(intern);
@@ -125,75 +133,11 @@ function init() {
           })
         }
       })
-
-
-
-
-      }); // Call the function that creates the HMTL
+      }); 
   }
   // Call the manager function
   manager();
 }
-
-
-
-// Function that creates the HTML
-const generateHTML = (userAnswers) => `<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-    <title>Team Profile</title>
-</head>
-<body>
-<div class="jumbotron jumbotron-fluid">
-  <div class="container">
-    <h1 class="display-4">My Team</h1>
-
-    <div class="card" style="width: 18rem;">
-    <div class="card-body">
-      <h5 class="card-title">Manager</h5>
-      <h4 class="card-text">${userAnswers.managersName}</h4>
-    </div>
-    <ul class="list-group list-group-flush">
-      <li class="list-group-item">${userAnswers.managersId}</li>
-      <li class="list-group-item">${userAnswers.managersEmail}</li>
-      <li class="list-group-item">${userAnswers.officeNumber}</li>
-    </ul>
-    </div>s
-  </div>
-
-  <div class="card" style="width: 18rem;">
-  <div class="card-body">
-    <h5 class="card-title">Engineer</h5>
-    <h4 class="card-text">${userAnswers.engineerName}</h4>
-  </div>
-  <ul class="list-group list-group-flush">
-    <li class="list-group-item">${userAnswers.engineerId}</li>
-    <li class="list-group-item">${userAnswers.engineerEmail}</li>
-    <li class="list-group-item">${userAnswers.githubUsername}</li>
-  </ul>
-  </div>s
-</div>
-
-<div class="card" style="width: 18rem;">
-<div class="card-body">
-  <h5 class="card-title">Intern</h5>
-  <h4 class="card-text">${userAnswers.internName}</h4>
-</div>
-<ul class="list-group list-group-flush">
-  <li class="list-group-item">${userAnswers.internId}</li>
-  <li class="list-group-item">${userAnswers.internEmail}</li>
-  <li class="list-group-item">${userAnswers.internSchool}</li>
-</ul>
-</div>s
-</div>
-
-</div>
-</body>
-</html>`;
 
 // Function call to initializa app
 init();
